@@ -1,3 +1,5 @@
+![Hybrid Logger logo](https://raw.githubusercontent.com/rudoapps/hybrid-storage/main/flutter/images/hybrid-logger/hybrid-logger-logo.png)
+
 # Hybrid Logger
 
 A useful package that provides Log tools for development, it lets you choose between some logs designs or types, and have an easy track of http calls, stack trace, etc. 
@@ -67,6 +69,8 @@ void main() async {
     debugMethod();
 }
 
+// Http Logs will require parameters that you should get while performing an api call,
+// if they are not setted, logger will show null on the field by default
 Future<void> apiCallMethod() async {
     logger.httpRequest(
         const HybridHttpRequest(

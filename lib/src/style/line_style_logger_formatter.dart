@@ -87,7 +87,7 @@ class LineStyleLogger implements StyleSource {
     const String reset = '\x1B[0m';
     const String gray = '\x1B[38;5;247m';
     return lines.map((line) {
-      final String prefixedLine = '$gray[MT-LOG]$reset $line';
+      final String prefixedLine = '$gray[HL-LOG]$reset $line';
       final String coloredLine = prefixedLine.replaceFirst(line, colorWriter(line));
       return coloredLine;
     }).join('\n');

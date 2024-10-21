@@ -11,7 +11,7 @@ class HybridLogger {
     this.settings = settings ?? HybridSettings();
     _output = log_output.outputLog;
     _outputRelease = log_output_release.outputLogRelease;
-    _filter = filter ?? LogTypeilter(this.settings.type);
+    _filter = filter ?? LogTypeFilter(this.settings.type);
     ansiColorDisabled = false;
   }
 

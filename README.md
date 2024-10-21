@@ -47,16 +47,35 @@ import 'package:hybrid_logger/hybrid_logger.dart';
 
 final logger = HybridLogger(
     settings: HybridSettings(
+        // Parameter to customize which colors will be used for logs
         colors: {
             LogTypeEntity.debug: AnsiPen.green()
         },
+
+        // Default logs Type
         type: LogTypeEntity.info,
+
+        // Separation symbol between logs
         lineSymbol: '-',
+
+        // Max characters by line
         maxLineWidth: 60,
+
+        // To choose showing separation symbols or not
         showLines: true,
+
+        // To hide or show defined Headers or Title of each log
         showHeaders: true,
+
+        // To use dart SDK prints if its needed
         forceLogs: false,
     ),
+
+    // Abstract class to define how logs will be displayed on console, default Impl is "LineStyleLogger"
+    formatter: const LineStyleLogger(),
+
+    // Optional abstract class to define when logs will be displayed
+    filter: LogTypeFilter()
 );
 ```
 
@@ -108,6 +127,8 @@ void debugMethod() {
 ## Author ✒️
 
 * **William Andreu** - *Hybrid TechLead* - [william@rudo.es](william@rudo.es)
+* **David Castillo Prieto** - *Flutter developer* - [davidcastillo@rudo.es](davidcastillo@rudo.es)
+* **Miguel Angel Soto** - *Flutter developer* - [miguelangelsoto@rudo.es](miguelangelsoto@rudo.es)
 ---
 
 With ❤️ by RudoApps Flutter Team 😊

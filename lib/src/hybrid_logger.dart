@@ -84,6 +84,14 @@ class HybridLogger {
         level: LogTypeEntity.stacktrace,
       );
 
+  void exceptionTrx(Object exception, StackTrace stack) => log(
+        "",
+        stackTrx: stack,
+        header: exception.toString(),
+        color: AnsiPen()..red(),
+        level: LogTypeEntity.stacktrace,
+      );
+
   void httpRequest(HybridHttpRequest request) => log(
         "",
         header: 'Dio Interceptor Request',

@@ -63,7 +63,13 @@ class HybridLogger {
 
   void critical(dynamic msg, {String? header}) => log(msg, header: header, level: LogTypeEntity.critical);
 
-  void error(dynamic msg, {String? header}) => log(msg, header: header, level: LogTypeEntity.error);
+  void error(dynamic msg, {String? header, StackTrace? stack}) => log(
+        stack != null ? "" : msg,
+        header: stack != null ? '${header != null ? '$header | ' : ''}$msg' : header,
+        stackTrx: stack,
+        level: LogTypeEntity.stacktrace,
+        color: AnsiPen()..red(),
+      );
 
   void warning(dynamic msg, {String? header}) => log(msg, header: header, level: LogTypeEntity.warning);
 

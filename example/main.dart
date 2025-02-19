@@ -55,8 +55,11 @@ void main() {
 
   try {
     simulateError();
-  } catch (e, stacktrace) {
-    logger.stackTrx(stacktrace, header: e.toString());
+  } catch (exception, stacktrace) {
+    logger.error(exception, stack: stacktrace);
+    logger.error(exception, header: 'Custom header', stack: stacktrace);
+    logger.error(exception, header: 'Custom header');
+    logger.error(exception);
   }
   debugger();
 }

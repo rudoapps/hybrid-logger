@@ -1,3 +1,7 @@
+## 1.0.3
+
+* Add documentation comments to package code
+
 ## 1.0.2
 
 * Change HybridLogger().error method to have optional StackTrace parameter to show with the log

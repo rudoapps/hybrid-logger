@@ -1,6 +1,6 @@
 name: hybrid_logger
 description: "Hybrid Logger, Gives different Log tools for development, such as common debug logs, stacktrace, http calls, etc."
-version: 1.0.0
+version: 1.0.2
 homepage: https://rudo.es/
 repository: https://github.com/rudoapps/hybrid-logger.git
 issue_tracker: https://github.com/rudoapps/hybrid-logger/issues

@@ -1,7 +1,9 @@
 import 'package:hybrid_logger/hybrid_logger.dart';
 import 'package:hybrid_logger/src/entities/stacktrace_entity.dart';
 
+/// Class that will format the log entity to a String on the console.
 class LineStyleLogger implements StyleSource {
+  /// Constructor that will create a new instance of the [LineStyleLogger].
   const LineStyleLogger();
 
   @override

@@ -13,7 +13,9 @@ final _defaultColors = {
   LogTypeEntity.httpError: AnsiPen()..red(),
 };
 
+/// Class that holds the settings data of the logger.
 class HybridSettings {
+  /// Default constructor for the settings.
   HybridSettings({
     Map<LogTypeEntity, AnsiPen>? colors,
     this.type = LogTypeEntity.info,
@@ -29,15 +31,28 @@ class HybridSettings {
     this.colors.addAll(_defaultColors);
   }
 
+  /// Color definitions for each log type. If not defined, it will use the default colors.
   final Map<LogTypeEntity, AnsiPen> colors = _defaultColors;
 
+  /// Enum [LogTypeEntity] that defines the log type.
   final LogTypeEntity type;
+
+  /// Symbol used to draw lines in the logs.
   final String lineSymbol;
+
+  /// Maximum line width for the logs.
   final int maxLineWidth;
+
+  /// Flag to show lines in the logs.
   final bool showLines;
+
+  /// Flag to show headers in the logs.
   final bool showHeaders;
+
+  /// Flag to force logs to be printed on release mode.
   final bool forceLogs;
 
+  /// Method to copy the settings with new values.
   HybridSettings copyWith({
     Map<LogTypeEntity, AnsiPen>? colors,
     LogTypeEntity? type,

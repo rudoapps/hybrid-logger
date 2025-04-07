@@ -24,6 +24,7 @@ class HybridSettings {
     this.showLines = true,
     this.showHeaders = true,
     this.forceLogs = false,
+    this.maxLogLength = 500,
   }) {
     if (colors != null) {
       _defaultColors.addAll(colors);
@@ -51,6 +52,7 @@ class HybridSettings {
 
   /// Flag to force logs to be printed on release mode.
   final bool forceLogs;
+  final int maxLogLength;
 
   /// Method to copy the settings with new values.
   HybridSettings copyWith({

@@ -9,11 +9,11 @@ class LineStyleLogger implements StyleSource {
   @override
   String formater(LogEntity details, HybridSettings settings) {
     final header = _formatHeader(details.header);
-    final message = _formatMessage(details.message);
+    final message = _formatMessage(details.message, settings);
     final logTypeHandlers = _getLogTypeHandlers(details);
     final formattedLog = _formatLogLines(
       header,
-      message.toString(),
+      message,
       settings,
       logTypeHandlers,
     );
@@ -25,8 +25,11 @@ class LineStyleLogger implements StyleSource {
     return header == null ? '' : '[$header]';
   }
 
-  dynamic _formatMessage(dynamic message) {
-    return message ?? '';
+  String _formatMessage(dynamic message, HybridSettings settings) {
+    final trimmedMessage = message.toString().length > settings.maxLogLength
+        ? '${message.toString().substring(0, settings.maxLogLength)}\n...'
+        : message.toString();
+    return trimmedMessage;
   }
 
   Map<String, String> _getLogTypeHandlers(LogEntity details) {

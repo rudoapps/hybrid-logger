@@ -22,7 +22,7 @@ class HybridSettings {
     this.showLines = true,
     this.showHeaders = true,
     this.forceLogs = false,
-    this.maxLogLength = 500,
+    this.maxLogLength,
   }) {
     if (colors != null) {
       _defaultColors.addAll(colors);
@@ -38,7 +38,7 @@ class HybridSettings {
   final bool showLines;
   final bool showHeaders;
   final bool forceLogs;
-  final int maxLogLength;
+  final int? maxLogLength;
 
   HybridSettings copyWith({
     Map<LogTypeEntity, AnsiPen>? colors,

@@ -26,7 +26,9 @@ class LineStyleLogger implements StyleSource {
   }
 
   String _formatMessage(dynamic message, HybridSettings settings) {
-    final trimmedMessage = message.toString().length > settings.maxLogLength
+    if (settings.maxLogLength == null) return message.toString();
+
+    final trimmedMessage = message.toString().length > settings.maxLogLength!
         ? '${message.toString().substring(0, settings.maxLogLength)}\n...'
         : message.toString();
     return trimmedMessage;

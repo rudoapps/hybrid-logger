@@ -11,7 +11,8 @@ class ColorStyleLogger implements StyleSource {
       lineSymbol: settings.lineSymbol,
     );
     final message = details.message?.toString() ?? '';
-    final formattedLines = message.split('\n').map(details.color.write).toList()..add(details.color.write(underline));
+    final formattedLines = message.split('\n').map(details.color.write).toList()
+      ..add(details.color.write(underline));
     return formattedLines.join('\n');
   }
 }

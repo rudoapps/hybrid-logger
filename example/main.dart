@@ -3,12 +3,24 @@ import 'dart:developer';
 import 'package:hybrid_logger/hybrid_logger.dart';
 
 void main() {
-  final logger = HybridLogger(settings: HybridSettings(type: LogTypeEntity.debug));
+  final logger =
+      HybridLogger(settings: HybridSettings(type: LogTypeEntity.debug));
 
-// Init Logger with custom filter
-//  final logger = HybridLogger(
-//      settings: HybridSettings(),
-//      filter: const LogTypeilterCustom(LogTypeEntity.httpError));
+  // Init Logger with max log length
+  // final logger = HybridLogger(
+  //   settings: HybridSettings(
+  //     type: LogTypeEntity.debug,
+  //     maxLogLength: 500,
+  //   ),
+  // );
+
+  // Init Logger with custom filter
+  // final logger2 = HybridLogger(
+  //   settings: HybridSettings(),
+  //   filter: const CustomLogTypeFilter(
+  //     LogTypeEntity.httpError,
+  //   ),
+  // );
 
   logger.debug('debug', header: 'test 1');
   logger.info('info');
@@ -31,7 +43,8 @@ void main() {
   );
   logger.error('error');
   logger.critical('Critical');
-  logger.httpError(const HybridHttpError(path: 'Test/text/v2', statusCode: '500'));
+  logger.httpError(
+      const HybridHttpError(path: 'Test/text/v2', statusCode: '500'));
   logger.log(
     'log with level info',
     header: 'test 6',

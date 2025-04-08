@@ -1,6 +1,7 @@
 ## 1.0.3
 
 * Add documentation comments to package code
+* Add max log length parameter to HybridLogger
 
 ## 1.0.2
 

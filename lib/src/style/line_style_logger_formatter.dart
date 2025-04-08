@@ -1,5 +1,5 @@
 import 'package:hybrid_logger/hybrid_logger.dart';
-import 'package:hybrid_logger/src/entities/stacktrace_entity.dart';
+import 'package:hybrid_logger/src/entities/stack_trace_entity.dart';
 
 /// Class that will format the log entity to a String on the console.
 class LineStyleLogger implements StyleSource {
@@ -37,14 +37,19 @@ class LineStyleLogger implements StyleSource {
   Map<String, String> _getLogTypeHandlers(LogEntity details) {
     return {
       'stackTrace':
-          details.type == LogTypeEntity.stacktrace && details.stack != null ? _formatStackTrace(details.stack!) : '',
-      'httpError': details.type == LogTypeEntity.httpError && details.httpError != null
-          ? _formatHttpError(details.httpError!)
-          : '',
-      'httpResponse': details.type == LogTypeEntity.httpResponse && details.httpResponse != null
+          details.type == LogTypeEntity.stacktrace && details.stack != null
+              ? _formatStackTrace(details.stack!)
+              : '',
+      'httpError':
+          details.type == LogTypeEntity.httpError && details.httpError != null
+              ? _formatHttpError(details.httpError!)
+              : '',
+      'httpResponse': details.type == LogTypeEntity.httpResponse &&
+              details.httpResponse != null
           ? _formatHttpResponse(details.httpResponse!)
           : '',
-      'httpRequest': details.type == LogTypeEntity.httpRequest && details.httpRequest != null
+      'httpRequest': details.type == LogTypeEntity.httpRequest &&
+              details.httpRequest != null
           ? _formatHttpRequest(details.httpRequest!)
           : '',
     };
@@ -80,7 +85,9 @@ class LineStyleLogger implements StyleSource {
   }
 
   List<String> _selectLogLines(Map<String, String> logTypeHandlers) {
-    return logTypeHandlers.values.expand((log) => _indentLines(log.split('\n'))).toList();
+    return logTypeHandlers.values
+        .expand((log) => _indentLines(log.split('\n')))
+        .toList();
   }
 
   List<String> _indentLines(List<String> lines) {
@@ -95,7 +102,8 @@ class LineStyleLogger implements StyleSource {
     const String gray = '\x1B[38;5;247m';
     return lines.map((line) {
       final String prefixedLine = '$gray[MT-LOG]$reset $line';
-      final String coloredLine = prefixedLine.replaceFirst(line, colorWriter(line));
+      final String coloredLine =
+          prefixedLine.replaceFirst(line, colorWriter(line));
       return coloredLine;
     }).join('\n');
   }
@@ -127,7 +135,7 @@ class LineStyleLogger implements StyleSource {
         " => METHOD: ${request.method}";
   }
 
-  StacktraceEntity _parseTrace(StackTrace trace) {
+  StackTraceEntity _parseTrace(StackTrace trace) {
     final frames = trace.toString().split('\n');
     final functionName = _getFunctionNameFromFrame(frames[0]);
     //final callerFunctionName = _getFunctionNameFromFrame(frames[1]);
@@ -136,7 +144,7 @@ class LineStyleLogger implements StyleSource {
     //final lineNumber = _extractLineNumber(traceString);
     //final columnNumber = _extractColumnNumber(traceString);
 
-    return StacktraceEntity(
+    return StackTraceEntity(
       fileName: fileName,
       functionName: functionName,
     );

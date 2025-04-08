@@ -1,3 +1,7 @@
+## 1.04
+
+* Fix max log length was not working on HTTP logs & Stacktrace logs
+
 ## 1.0.3
 
 * Add documentation comments to package code

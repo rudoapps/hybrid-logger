@@ -10,7 +10,7 @@ class LineStyleLogger implements StyleSource {
   String formater(LogEntity details, HybridSettings settings) {
     final header = _formatHeader(details.header);
     final message = _formatMessage(details.message, settings);
-    final logTypeHandlers = _getLogTypeHandlers(details);
+    final logTypeHandlers = _getLogTypeHandlers(details, settings);
     final formattedLog = _formatLogLines(
       header,
       message,
@@ -34,23 +34,19 @@ class LineStyleLogger implements StyleSource {
     return trimmedMessage;
   }
 
-  Map<String, String> _getLogTypeHandlers(LogEntity details) {
+  Map<String, String> _getLogTypeHandlers(LogEntity details, HybridSettings settings) {
     return {
-      'stackTrace':
-          details.type == LogTypeEntity.stacktrace && details.stack != null
-              ? _formatStackTrace(details.stack!)
-              : '',
-      'httpError':
-          details.type == LogTypeEntity.httpError && details.httpError != null
-              ? _formatHttpError(details.httpError!)
-              : '',
-      'httpResponse': details.type == LogTypeEntity.httpResponse &&
-              details.httpResponse != null
-          ? _formatHttpResponse(details.httpResponse!)
+      'stackTrace': details.type == LogTypeEntity.stacktrace && details.stack != null
+          ? _formatStackTrace(details.stack!, settings)
           : '',
-      'httpRequest': details.type == LogTypeEntity.httpRequest &&
-              details.httpRequest != null
-          ? _formatHttpRequest(details.httpRequest!)
+      'httpError': details.type == LogTypeEntity.httpError && details.httpError != null
+          ? _formatHttpError(details.httpError!, settings)
+          : '',
+      'httpResponse': details.type == LogTypeEntity.httpResponse && details.httpResponse != null
+          ? _formatHttpResponse(details.httpResponse!, settings)
+          : '',
+      'httpRequest': details.type == LogTypeEntity.httpRequest && details.httpRequest != null
+          ? _formatHttpRequest(details.httpRequest!, settings)
           : '',
     };
   }
@@ -85,9 +81,7 @@ class LineStyleLogger implements StyleSource {
   }
 
   List<String> _selectLogLines(Map<String, String> logTypeHandlers) {
-    return logTypeHandlers.values
-        .expand((log) => _indentLines(log.split('\n')))
-        .toList();
+    return logTypeHandlers.values.expand((log) => _indentLines(log.split('\n'))).toList();
   }
 
   List<String> _indentLines(List<String> lines) {
@@ -102,37 +96,64 @@ class LineStyleLogger implements StyleSource {
     const String gray = '\x1B[38;5;247m';
     return lines.map((line) {
       final String prefixedLine = '$gray[MT-LOG]$reset $line';
-      final String coloredLine =
-          prefixedLine.replaceFirst(line, colorWriter(line));
+      final String coloredLine = prefixedLine.replaceFirst(line, colorWriter(line));
       return coloredLine;
     }).join('\n');
   }
 
-  String _formatStackTrace(StackTrace stack) {
+  String _formatStackTrace(StackTrace stack, HybridSettings settings) {
     final stackEntity = _parseTrace(stack);
-    return [stackEntity.fileName, '${stackEntity.functionName}()'].join('\n');
+    final stackString = [stackEntity.fileName, '${stackEntity.functionName}()'].join('\n');
+
+    if (settings.maxLogLength == null) return stackString;
+
+    final trimmedMessage = stackString.length > settings.maxLogLength!
+        ? '${stackString.substring(0, settings.maxLogLength)}\n...'
+        : stackString;
+    return trimmedMessage;
   }
 
-  String _formatHttpError(HybridHttpError error) {
-    return " => PATH: ${error.path}\n"
+  String _formatHttpError(HybridHttpError error, HybridSettings settings) {
+    final String errorString = " => PATH: ${error.path}\n"
         " => STATUS CODE: ${error.statusCode}";
+
+    if (settings.maxLogLength == null) return errorString;
+
+    final trimmedMessage = errorString.length > settings.maxLogLength!
+        ? '${errorString.substring(0, settings.maxLogLength)}\n...'
+        : errorString;
+    return trimmedMessage;
   }
 
-  String _formatHttpResponse(HybridHttpResponse response) {
-    return " => RESPONSE STATUS CODE: ${response.statusCode}\n"
+  String _formatHttpResponse(HybridHttpResponse response, HybridSettings settings) {
+    final String responseString = " => RESPONSE STATUS CODE: ${response.statusCode}\n"
         " => RESPONSE STATUS MESSAGE: ${response.statusMessage} \n"
         " => RESPONSE DATA: ${response.data}\n"
         " => MS: ${response.ms}";
+
+    if (settings.maxLogLength == null) return responseString;
+
+    final trimmedMessage = responseString.length > settings.maxLogLength!
+        ? '${responseString.substring(0, settings.maxLogLength)}\n...'
+        : responseString;
+    return trimmedMessage;
   }
 
-  String _formatHttpRequest(HybridHttpRequest request) {
-    return " => BASE URL: ${request.baseUrl}\n"
+  String _formatHttpRequest(HybridHttpRequest request, HybridSettings settings) {
+    final String requestString = " => BASE URL: ${request.baseUrl}\n"
         " => PATH: ${request.path}\n"
         " => DATA: ${request.data}\n"
         " => QUERY PARAMS: ${request.queryParameters}\n"
         " => HEADERS: ${request.headers}\n"
         " => RESPONSE TYPE: ${request.responseType}\n"
         " => METHOD: ${request.method}";
+
+    if (settings.maxLogLength == null) return requestString;
+
+    final trimmedMessage = requestString.length > settings.maxLogLength!
+        ? '${requestString.substring(0, settings.maxLogLength)}\n...'
+        : requestString;
+    return trimmedMessage;
   }
 
   StackTraceEntity _parseTrace(StackTrace trace) {
@@ -144,10 +165,7 @@ class LineStyleLogger implements StyleSource {
     //final lineNumber = _extractLineNumber(traceString);
     //final columnNumber = _extractColumnNumber(traceString);
 
-    return StackTraceEntity(
-      fileName: fileName,
-      functionName: functionName,
-    );
+    return StackTraceEntity(fileName: fileName, functionName: functionName);
   }
 
   String _extractFileName(String traceString) {

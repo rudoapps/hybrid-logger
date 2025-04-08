@@ -1,4 +1,4 @@
-## 1.04
+## 1.0.4
 
 * Fix max log length was not working on HTTP logs & Stacktrace logs
 

@@ -69,6 +69,9 @@ final logger = HybridLogger(
 
         // To use dart SDK prints if its needed
         forceLogs: false,
+
+        // Max characters by log
+        maxLogLength: 500,
     ),
 
     // Abstract class to define how logs will be displayed on console, default Impl is "LineStyleLogger"

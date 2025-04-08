@@ -52,6 +52,8 @@ class HybridSettings {
 
   /// Flag to force logs to be printed on release mode.
   final bool forceLogs;
+
+  /// Max number of characters to show in the log. If null, there is no limit.
   final int? maxLogLength;
 
   /// Method to copy the settings with new values.

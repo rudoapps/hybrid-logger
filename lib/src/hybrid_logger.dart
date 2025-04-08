@@ -1,6 +1,8 @@
 import 'package:hybrid_logger/hybrid_logger.dart';
-import 'package:hybrid_logger/src/utils/hybrid_logger_debug_io.dart' as log_output;
-import 'package:hybrid_logger/src/utils/hybrid_logger_release_io.dart' as log_output_release;
+import 'package:hybrid_logger/src/utils/hybrid_logger_debug_io.dart'
+    as log_output;
+import 'package:hybrid_logger/src/utils/hybrid_logger_release_io.dart'
+    as log_output_release;
 
 /// Class that holds the logger instance which methods can log on the console.
 class HybridLogger {
@@ -54,7 +56,8 @@ class HybridLogger {
     bool? forceLogs,
   }) {
     final selectedType = level ?? LogTypeEntity.debug;
-    final selectedColor = color ?? settings.colors[selectedType] ?? (AnsiPen()..gray());
+    final selectedColor =
+        color ?? settings.colors[selectedType] ?? (AnsiPen()..gray());
     final shouldLog = _filter.shouldLog(selectedType);
     final forceLogs = settings.forceLogs;
 
@@ -80,26 +83,31 @@ class HybridLogger {
   }
 
   /// Method that will log the message on the console with the [LogTypeEntity.critical] level.
-  void critical(dynamic msg, {String? header}) => log(msg, header: header, level: LogTypeEntity.critical);
+  void critical(dynamic msg, {String? header}) =>
+      log(msg, header: header, level: LogTypeEntity.critical);
 
   /// Method that will log the message on the console with the [LogTypeEntity.error] level.
   /// Unlike other methods, this method will log the stack trace if it is provided.
   void error(dynamic msg, {String? header, StackTrace? stack}) => log(
         stack != null ? "" : msg,
-        header: stack != null ? '${header != null ? '$header | ' : ''}$msg' : header,
+        header: stack != null
+            ? '${header != null ? '$header | ' : ''}$msg'
+            : header,
         stackTrx: stack,
         level: LogTypeEntity.stacktrace,
         color: AnsiPen()..red(),
       );
 
   /// Method that will log the message on the console with the [LogTypeEntity.warning] level.
-  void warning(dynamic msg, {String? header}) => log(msg, header: header, level: LogTypeEntity.warning);
+  void warning(dynamic msg, {String? header}) =>
+      log(msg, header: header, level: LogTypeEntity.warning);
 
   /// Method that will log the message on the console with the [LogTypeEntity.debug] level.
   void debug(dynamic msg, {String? header}) => log(msg, header: header);
 
   /// Method that will log the message on the console with the [LogTypeEntity.info] level.
-  void info(dynamic msg, {String? header}) => log(msg, header: header, level: LogTypeEntity.info);
+  void info(dynamic msg, {String? header}) =>
+      log(msg, header: header, level: LogTypeEntity.info);
 
   /// Method that will log the message on the console with the [LogTypeEntity.success] level.
   void success(dynamic msg, {String? header}) => log(

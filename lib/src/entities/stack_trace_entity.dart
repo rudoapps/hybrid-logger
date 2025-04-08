@@ -1,14 +1,5 @@
 /// Entity class for stacktrace
-class StacktraceEntity {
-  /// Constructor for stacktrace entity
-  const StacktraceEntity({
-    required this.fileName,
-    required this.functionName,
-    this.callerFunctionName,
-    this.lineNumber,
-    this.columnNumber,
-  });
-
+class StackTraceEntity {
   /// File name of the stacktrace
   final String fileName;
 
@@ -23,4 +14,13 @@ class StacktraceEntity {
 
   /// Column number of the stacktrace
   final int? columnNumber;
+
+  /// Constructor for stacktrace entity
+  const StackTraceEntity({
+    required this.fileName,
+    required this.functionName,
+    this.callerFunctionName,
+    this.lineNumber,
+    this.columnNumber,
+  });
 }

@@ -26,13 +26,13 @@ class LineStyleLogger implements StyleSource {
       return '';
     }
 
-    String? value;
+    String? trimmedHeader;
 
     if (header.length > settings.maxLineWidth) {
-      value = settings.limitHeaderLength ? '${header.substring(0, settings.maxLineWidth - 4)}...' : header;
+      trimmedHeader = settings.limitHeaderLength ? '${header.substring(0, settings.maxLineWidth - 4)}...' : header;
     }
 
-    return '[${value ?? header}]';
+    return '[${trimmedHeader ?? header}]';
   }
 
   String _formatMessage(dynamic message, HybridSettings settings) {

@@ -1,3 +1,7 @@
+## 1.0.5
+* Fix line style logger was changed by not updated branch
+* Fix max line length on Log Headers
+
 ## 1.0.4
 
 * Fix max log length was not working on HTTP logs & Stacktrace logs

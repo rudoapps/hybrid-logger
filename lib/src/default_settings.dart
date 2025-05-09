@@ -23,6 +23,7 @@ class HybridSettings {
     this.maxLineWidth = 60,
     this.showLines = true,
     this.showHeaders = true,
+    this.limitHeaderLength = true,
     this.forceLogs = false,
     this.maxLogLength,
   }) {
@@ -49,6 +50,9 @@ class HybridSettings {
 
   /// Flag to show headers in the logs.
   final bool showHeaders;
+
+  /// Flag to limit the length of the header to [maxLineWidth] value.
+  final bool limitHeaderLength;
 
   /// Flag to force logs to be printed on release mode.
   final bool forceLogs;

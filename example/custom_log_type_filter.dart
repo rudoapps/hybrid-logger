@@ -1,7 +1,7 @@
 import 'package:hybrid_logger/hybrid_logger.dart';
 
-class LogTypeilterCustom implements LoggerFilter {
-  const LogTypeilterCustom(this.logLevel);
+class CustomLogTypeFilter implements LoggerFilter {
+  const CustomLogTypeFilter(this.logLevel);
 
   final LogTypeEntity logLevel;
 

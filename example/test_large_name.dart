@@ -3,7 +3,8 @@ import 'dart:developer';
 import 'package:hybrid_logger/hybrid_logger.dart';
 
 void main() {
-  final logger = HybridLogger(settings: HybridSettings(type: LogTypeEntity.debug));
+  final logger =
+      HybridLogger(settings: HybridSettings(type: LogTypeEntity.debug));
 
 // Init Logger with custom filter
 //  final logger = HybridLogger(
@@ -31,7 +32,8 @@ void main() {
       statusCode: "500",
     ),
   );
-  logger.httpError(const HybridHttpError(path: 'Test/text/v2', statusCode: '500'));
+  logger.httpError(
+      const HybridHttpError(path: 'Test/text/v2', statusCode: '500'));
   logger.log(
     'log with level info',
     header: 'test 6',

@@ -1,3 +1,7 @@
+## 1.1.0
+* Fix logs on Flutter Web Debug didn't print the correct StackTrace
+* Fix logs on Flutter Web Release with foreceLogs doesn't crashes trying to show StackTrace logs
+
 ## 1.0.5
 * Fix line style logger was changed by not updated branch
 * Fix max line length on Log Headers

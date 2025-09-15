@@ -9,6 +9,20 @@
             "request": "launch",
             "type": "dart",
             "program": "example/main.dart"
+        },
+        {
+            "name": "hybrid_logger_web (Debug)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "program": "example/hybrid_logger_web/lib/main.dart"
+        },
+        {
+            "name": "hybrid_logger_web (Release)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "program": "example/hybrid_logger_web/lib/main.dart"
         }
     ]
 }

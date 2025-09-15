@@ -6,6 +6,8 @@ class LineStyleLogger implements StyleSource {
   /// Constructor that will create a new instance of the [LineStyleLogger].
   const LineStyleLogger();
 
+  bool get _isWeb => identical(0, 0.0);
+
   @override
   String formater(LogEntity details, HybridSettings settings) {
     final header = _formatHeader(details.header, settings);
@@ -68,7 +70,7 @@ class LineStyleLogger implements StyleSource {
     Map<String, String> logTypeHandlers,
   ) {
     final messageLines = _indentLines(message.split('\n'));
-    final logLines = _selectLogLines(logTypeHandlers);
+    final logLines = _selectLogLines(logTypeHandlers, settings);
 
     final headerLine = ConsoleUtil.getline(
       settings.maxLineWidth,
@@ -90,8 +92,12 @@ class LineStyleLogger implements StyleSource {
     return formattedLines.where((line) => line.isNotEmpty).toList();
   }
 
-  List<String> _selectLogLines(Map<String, String> logTypeHandlers) {
-    return logTypeHandlers.values.expand((log) => _indentLines(log.split('\n'))).toList();
+  List<String> _selectLogLines(Map<String, String> logTypeHandlers, HybridSettings settings) {
+    return logTypeHandlers.keys
+        .expand((key) => key == 'stackTrace' && _isWeb && settings.forceLogs
+            ? [logTypeHandlers[key]!]
+            : _indentLines(logTypeHandlers[key]!.split('\n')))
+        .toList();
   }
 
   List<String> _indentLines(List<String> lines) {
@@ -112,6 +118,10 @@ class LineStyleLogger implements StyleSource {
   }
 
   String _formatStackTrace(StackTrace stack, HybridSettings settings) {
+    if (_isWeb && settings.forceLogs) {
+      return stack.toString();
+    }
+
     final stackEntity = _parseTrace(stack);
     final stackString = [stackEntity.fileName, '${stackEntity.functionName}()'].join('\n');
 
@@ -168,9 +178,15 @@ class LineStyleLogger implements StyleSource {
 
   StackTraceEntity _parseTrace(StackTrace trace) {
     final frames = trace.toString().split('\n');
-    final functionName = _getFunctionNameFromFrame(frames[0]);
-    //final callerFunctionName = _getFunctionNameFromFrame(frames[1]);
-    final traceString = frames[0];
+    String frame;
+
+    try {
+      frame = _isWeb ? frames[1] : frames[0];
+    } catch (e) {
+      frame = frames[0];
+    }
+    final functionName = _getFunctionNameFromFrame(frame);
+    final traceString = frame;
     final fileName = _extractFileName(traceString);
     //final lineNumber = _extractLineNumber(traceString);
     //final columnNumber = _extractColumnNumber(traceString);
@@ -185,13 +201,13 @@ class LineStyleLogger implements StyleSource {
 
   String _getFunctionNameFromFrame(String frame) {
     final currentTrace = frame;
-    var indexOfWhiteSpace = currentTrace.indexOf(' ');
-    var subStr = currentTrace.substring(indexOfWhiteSpace);
+    var indexOfWhiteSpace = _isWeb ? currentTrace.lastIndexOf(' ') : currentTrace.indexOf(' ');
+    var subStr = currentTrace.substring(indexOfWhiteSpace != -1 ? indexOfWhiteSpace : 0);
     final indexOfFunction = subStr.indexOf(RegExp('[A-Za-z0-9]'));
-    subStr = subStr.substring(indexOfFunction);
+    subStr = subStr.substring(indexOfFunction != -1 ? indexOfFunction : 0);
     indexOfWhiteSpace = subStr.indexOf(' ');
     // ignore: join_return_with_assignment
-    subStr = subStr.substring(0, indexOfWhiteSpace);
+    subStr = subStr.substring(0, indexOfWhiteSpace != -1 ? indexOfWhiteSpace : subStr.length);
     return subStr;
   }
 }

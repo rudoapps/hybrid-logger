@@ -6,3 +6,6 @@ build/
 pubspec.lock
 
 doc/api/
+
+# FVM Version Cache
+.fvm/

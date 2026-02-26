@@ -31,16 +31,3 @@ enum LogTypeEntity {
   httpError
 }
 
-/// List of log types in order of priority
-final logTypePriorityList = [
-  LogTypeEntity.httpResponse,
-  LogTypeEntity.httpRequest,
-  LogTypeEntity.httpError,
-  LogTypeEntity.stacktrace,
-  LogTypeEntity.success,
-  LogTypeEntity.critical,
-  LogTypeEntity.error,
-  LogTypeEntity.warning,
-  LogTypeEntity.info,
-  LogTypeEntity.debug,
-];

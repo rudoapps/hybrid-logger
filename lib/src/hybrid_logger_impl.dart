@@ -1,38 +1,31 @@
 import 'package:hybrid_logger/hybrid_logger.dart';
-import 'package:hybrid_logger/src/utils/hybrid_logger_debug_io.dart'
-    as log_output;
-import 'package:hybrid_logger/src/utils/hybrid_logger_release_io.dart'
-    as log_output_release;
+import 'package:hybrid_logger/src/utils/filter/logger_filter_impl.dart';
+import 'package:hybrid_logger/src/source/hybrid_logger.dart';
+import 'package:hybrid_logger/src/utils/style-formatter/line_style_formatter.dart';
+import 'dart:developer' as dev;
 
 /// Class that holds the logger instance which methods can log on the console.
-class HybridLogger {
+class HybridLoggerImpl implements HybridLogger {
+  /// [HybridSettings] - Settings for the logger.
+  final HybridSettings settings;
+
+  /// Formatter for the logger. Defined by the [LineStyleFormatter] which is an implementation of [StyleFormatter].
+  final StyleFormatter formatter;
+
+  final LoggerFilter _filter;
+
   /// Default constructor for the logger.
-  HybridLogger({
+  /// * [settings] - The [HybridSettings] for the logger, if null it will use the default settings.
+  /// * [formatter] - The [LineStyleFormatter] for the logger, if null it will use the default formatter.
+  /// * [filter] - The [LoggerFilter] for the logger, if null it will use the default filter.
+  HybridLoggerImpl({
     HybridSettings? settings,
-    this.formatter = const LineStyleLogger(),
+    this.formatter = const LineStyleFormatter(),
     LoggerFilter? filter,
-  }) {
-    this.settings = settings ?? HybridSettings();
-    _output = log_output.outputLog;
-    _outputRelease = log_output_release.outputLogRelease;
-    _filter = filter ?? LogTypeFilter(this.settings.type);
+  })  : settings = settings ?? HybridSettings(),
+        _filter = filter ?? LoggerFilterImpl(logLevel: (settings ?? HybridSettings()).type) {
     ansiColorDisabled = false;
   }
-
-  /// [HybridSettings] - Settings for the logger.
-  late final HybridSettings settings;
-
-  /// Formatter for the logger. Defined by the [LineStyleLogger] which is an implementation of [StyleSource].
-  final LineStyleLogger formatter;
-
-  /// Private method that will log the message on the console.
-  /// Currently
-  late final void Function(String message) _output;
-
-  ///private method that will log the message on the console on release mode.
-  late final void Function(String message) _outputRelease;
-
-  late final LoggerFilter _filter;
 
   /// Base log function that will log the message on the console based on the given parameters and the [LogTypeEntity].
   /// * [msg] - The message that will be logged.
@@ -73,11 +66,11 @@ class HybridLogger {
         httpRequest: httpRequest,
       );
 
-      final formattedMsg = formatter.formater(logEntity, settings);
+      final formattedMsg = formatter.format(details: logEntity, settings: settings);
       if (forceLogs) {
-        _outputRelease(formattedMsg);
+        _outputLogRelease(formattedMsg);
       } else {
-        _output(formattedMsg);
+        _outputLog(formattedMsg);
       }
     }
   }
@@ -127,7 +120,7 @@ class HybridLogger {
   /// Method that will log the [HybridHttpRequest] on the console with the [LogTypeEntity.httpRequest] level.
   void httpRequest(HybridHttpRequest request) => log(
         "",
-        header: 'Dio Interceptor Request',
+        header: 'HTTP Interceptor Request',
         level: LogTypeEntity.httpRequest,
         httpRequest: request,
       );
@@ -135,7 +128,7 @@ class HybridLogger {
   /// Method that will log the [HybridHttpResponse] on the console with the [LogTypeEntity.httpResponse] level.
   void httpResponse(HybridHttpResponse response) => log(
         "",
-        header: 'Dio Interceptor Response',
+        header: 'HTTP Interceptor Response',
         level: LogTypeEntity.httpResponse,
         httpResponse: response,
       );
@@ -143,7 +136,7 @@ class HybridLogger {
   /// Method that will log the [HybridHttpError] on the console with the [LogTypeEntity.httpError] level.
   void httpError(HybridHttpError httpError) => log(
         "",
-        header: 'Dio Interceptor Error',
+        header: 'HTTP Interceptor Error',
         level: LogTypeEntity.httpError,
         httpError: httpError,
       );
@@ -151,15 +144,25 @@ class HybridLogger {
   /// Copy method that will return a new instance of the logger with the given parameters.
   HybridLogger copyWith({
     HybridSettings? settings,
-    LineStyleLogger? formatter,
+    StyleFormatter? formatter,
     LoggerFilter? filter,
     Function(String message)? output,
     Function(String message)? outputRelease,
   }) {
-    return HybridLogger(
+    return HybridLoggerImpl(
       settings: settings ?? this.settings,
       formatter: formatter ?? this.formatter,
       filter: filter ?? _filter,
     );
   }
+
+  // Method that will log the message on the console.
+  void _outputLog(String message) {
+    final StringBuffer buffer = StringBuffer();
+    message.split('\n').forEach(buffer.writeln);
+    dev.log(buffer.toString());
+  }
+
+  // Method that will log the message on the console on release mode.
+  void _outputLogRelease(String message) => message.split('\n').forEach(print);
 }

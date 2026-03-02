@@ -1,24 +1,16 @@
 /// ConsoleUtil abstract class
 /// This class contains the utility methods for the console.
-abstract class ConsoleUtil {
-  ConsoleUtil._();
-
+abstract interface class ConsoleUtil {
   /// Method that will generate a String line with the given length and symbol.
-  static String getline(
+  String getline(
     int length, {
     String lineSymbol = '',
-  }) {
-    final line = lineSymbol * length;
-    return '┌$line';
-  }
+  });
 
   /// Method that will generate a String line with the given length and symbol.
   /// Unlike getLine, initial symbol is reversed
-  static String getBottonLine(
+  String getBottomLine(
     int length, {
     String lineSymbol = '',
-  }) {
-    final line = lineSymbol * length;
-    return '└$line';
-  }
+  });
 }

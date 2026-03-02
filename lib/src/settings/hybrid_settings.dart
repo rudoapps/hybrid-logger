@@ -1,41 +1,7 @@
 import 'package:hybrid_logger/hybrid_logger.dart';
 
-final _defaultColors = {
-  LogTypeEntity.critical: AnsiPen()..xterm(198),
-  LogTypeEntity.error: AnsiPen()..red(),
-  LogTypeEntity.warning: AnsiPen()..yellow(),
-  LogTypeEntity.info: AnsiPen()..blue(),
-  LogTypeEntity.debug: AnsiPen()..gray(),
-  LogTypeEntity.success: AnsiPen()..xterm(49),
-  LogTypeEntity.stacktrace: AnsiPen()..xterm(214),
-  LogTypeEntity.httpRequest: AnsiPen()..xterm(012),
-  LogTypeEntity.httpResponse: AnsiPen()..xterm(49),
-  LogTypeEntity.httpError: AnsiPen()..red(),
-};
-
 /// Class that holds the settings data of the logger.
 class HybridSettings {
-  /// Default constructor for the settings.
-  HybridSettings({
-    Map<LogTypeEntity, AnsiPen>? colors,
-    this.type = LogTypeEntity.info,
-    this.lineSymbol = '─',
-    this.maxLineWidth = 60,
-    this.showLines = true,
-    this.showHeaders = true,
-    this.limitHeaderLength = true,
-    this.forceLogs = false,
-    this.maxLogLength,
-  }) {
-    if (colors != null) {
-      _defaultColors.addAll(colors);
-    }
-    this.colors.addAll(_defaultColors);
-  }
-
-  /// Color definitions for each log type. If not defined, it will use the default colors.
-  final Map<LogTypeEntity, AnsiPen> colors = _defaultColors;
-
   /// Enum [LogTypeEntity] that defines the log type.
   final LogTypeEntity type;
 
@@ -60,6 +26,40 @@ class HybridSettings {
   /// Max number of characters to show in the log. If null, there is no limit.
   final int? maxLogLength;
 
+  /// Color definitions for each log type. If not defined, it will use the default colors.
+  final Map<LogTypeEntity, AnsiPen> colors = _defaultColors;
+
+  /// Default constructor for the settings.
+  HybridSettings({
+    Map<LogTypeEntity, AnsiPen>? colors,
+    this.type = LogTypeEntity.info,
+    this.lineSymbol = '─',
+    this.maxLineWidth = 60,
+    this.showLines = true,
+    this.showHeaders = true,
+    this.limitHeaderLength = true,
+    this.forceLogs = false,
+    this.maxLogLength,
+  }) {
+    if (colors != null) {
+      _defaultColors.addAll(colors);
+    }
+    this.colors.addAll(_defaultColors);
+  }
+
+  static final Map<LogTypeEntity, AnsiPen> _defaultColors = {
+    LogTypeEntity.critical: AnsiPen()..xterm(198),
+    LogTypeEntity.error: AnsiPen()..red(),
+    LogTypeEntity.warning: AnsiPen()..yellow(),
+    LogTypeEntity.info: AnsiPen()..blue(),
+    LogTypeEntity.debug: AnsiPen()..gray(),
+    LogTypeEntity.success: AnsiPen()..xterm(49),
+    LogTypeEntity.stacktrace: AnsiPen()..xterm(214),
+    LogTypeEntity.httpRequest: AnsiPen()..xterm(012),
+    LogTypeEntity.httpResponse: AnsiPen()..xterm(49),
+    LogTypeEntity.httpError: AnsiPen()..red(),
+  };
+
   /// Method to copy the settings with new values.
   HybridSettings copyWith({
     Map<LogTypeEntity, AnsiPen>? colors,
@@ -69,6 +69,7 @@ class HybridSettings {
     bool? showLines,
     bool? showHeaders,
     bool? forceLogs,
+    int? maxLogLength,
   }) {
     return HybridSettings(
       colors: colors ?? this.colors,
@@ -78,6 +79,7 @@ class HybridSettings {
       showLines: showLines ?? this.showLines,
       showHeaders: showHeaders ?? this.showHeaders,
       forceLogs: forceLogs ?? this.forceLogs,
+      maxLogLength: maxLogLength ?? this.maxLogLength,
     );
   }
 }

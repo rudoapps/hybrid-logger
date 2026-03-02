@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:hybrid_logger/hybrid_logger.dart';
 
 void main() {
-  final logger = HybridLogger(settings: HybridSettings(type: LogTypeEntity.debug, maxLogLength: 150));
+  final logger = HybridLoggerImpl(settings: HybridSettings(type: LogTypeEntity.debug, maxLogLength: 150));
 
   // Init Logger with max log length
   // final logger = HybridLogger(
@@ -63,6 +63,7 @@ Est nostrud mollit incididunt dolore. Officia et ipsum anim sit esse. Deserunt c
     'log with level info',
     header: 'test 6',
     level: LogTypeEntity.error,
+    forceLogs: true,
   );
 
   final formatedData = convertStringFormat({

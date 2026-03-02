@@ -1,0 +1,26 @@
+name: Flutter & Dart PR Checks
+
+on:
+    pull_request:
+        branches:
+            - main
+        types: [opened, synchronize, reopened]
+
+jobs:
+    analyze-and-test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Set up Dart
+              uses: dart-lang/setup-dart@v1
+
+            - name: Install dependencies
+              run: dart pub get
+
+            - name: Code analyzer check
+              run: dart analyze lib
+
+            - name: Code formatting check
+              run: dart format --set-exit-if-changed .

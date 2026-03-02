@@ -1,0 +1,61 @@
+name: Check version and create release tag
+
+on:
+    pull_request:
+        branches:
+            - main
+        types: [opened, synchronize, reopened, closed]
+
+permissions:
+    contents: write
+
+jobs:
+    validate-pr:
+        if: github.event.action != 'closed'
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Validate source branch
+              run: |
+                  if [[ "${{ github.head_ref }}" != "develop" ]]; then
+                    echo "Error: Pull request source branch must be 'develop'."
+                    exit 1
+                  fi
+
+            - name: Check if PR version already exists
+              run: |
+                  VERSION=$(grep '^version: ' pubspec.yaml | sed 's/version: //' | xargs)
+                  echo "Checking pubspec version availability: $VERSION"
+
+                  if git rev-parse --verify "$VERSION" >/dev/null 2>&1; then
+                    echo "Error: Version $VERSION already exists as a tag."
+                    echo "Please update the version in pubspec.yaml before merging."
+                    exit 1
+                  else
+                    echo "Version $VERSION is available."
+                  fi
+
+    create-release-tag:
+        if: github.event.pull_request.merged == true && github.head_ref == 'develop'
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+                  token: ${{ secrets.TAGS_PAT }}
+
+            - name: Get pubspec version and push tag
+              run: |
+                  VERSION=$(grep '^version: ' pubspec.yaml | sed 's/version: //' | xargs)
+
+                  echo "Detected pubspec version: $VERSION"
+
+                  git config user.name "github-actions"
+                  git config user.email "github-actions@github.com"
+
+                  git tag $VERSION
+                  git push origin $VERSION
+                  echo "Version $VERSION tagged and pushed to origin."

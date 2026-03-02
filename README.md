@@ -1,4 +1,4 @@
-![Hybrid Logger logo](https://raw.githubusercontent.com/rudoapps/hybrid-storage/main/flutter/images/hybrid-logger/hybrid-logger-logo.png)
+![Hybrid Logger logo](https://raw.githubusercontent.com/rudoapps/hybrid-hub-vault/main/flutter/images/hybrid-logger/hybrid-logger-logo.png)
 
 # Hybrid Logger
 

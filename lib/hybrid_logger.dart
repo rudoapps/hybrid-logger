@@ -1,7 +1,7 @@
 export 'package:ansicolor/ansicolor.dart';
-export 'src/default_settings.dart';
-export 'src/entities/models.dart';
-export 'src/filter/filter.dart';
-export 'src/hybrid_logger.dart';
-export 'src/style/style_module.dart';
-export 'src/utils/console_util.dart';
+export 'src/settings/hybrid_settings.dart';
+export 'src/entities/entities.dart';
+export 'src/utils/filter/source/logger_filter.dart';
+export 'src/hybrid_logger_impl.dart';
+export 'src/utils/style-formatter/source/style_formatter.dart';
+export 'src/utils/console-util/source/console_util.dart';

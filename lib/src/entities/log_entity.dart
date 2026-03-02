@@ -2,18 +2,6 @@ import 'package:hybrid_logger/hybrid_logger.dart';
 
 /// Class that represents the log entity.
 class LogEntity {
-  /// Constructor that will create a new instance of the [LogEntity].
-  const LogEntity({
-    this.header,
-    required this.message,
-    required this.type,
-    required this.color,
-    this.stack,
-    this.httpRequest,
-    this.httpResponse,
-    this.httpError,
-  });
-
   /// The header of the log entity.
   final String? header;
 
@@ -37,4 +25,16 @@ class LogEntity {
 
   /// The http response of the log entity.
   final HybridHttpResponse? httpResponse;
+
+  /// Constructor that will create a new instance of the [LogEntity].
+  const LogEntity({
+    this.header,
+    required this.message,
+    required this.type,
+    required this.color,
+    this.stack,
+    this.httpRequest,
+    this.httpResponse,
+    this.httpError,
+  });
 }
